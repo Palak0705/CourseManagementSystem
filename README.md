@@ -1,0 +1,1 @@
+SkillTrek: Course Management System is for college students to learn coding. It includes quiz, add notes in specific timestamps and track the progress. MONGODB is used for backend database for user credentials and HTML, CSS, JavaScript for frontend.
