@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Operating Systems Course | SkillTrek</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .sidebar {
+            height: calc(100vh - 60px);
+            overflow-y: auto;
+        }
+        .lecture-item:hover {
+            background-color: #f3f4f6;
+        }
+        .active-lecture {
+            background-color: #e5e7eb;
+            border-left: 4px solid #4f46e5;
+        }
+        .progress-bar {
+            height: 6px;
+            background-color: #e5e7eb;
+        }
+        .progress-fill {
+            height: 100%;
+            background-color: #4f46e5;
+            transition: width 0.3s ease;
+        }
+        .note-timestamp {
+            color: #4f46e5;
+            cursor: pointer;
+        }
+        .note-timestamp:hover {
+            text-decoration: underline;
+        }
+        #videoContainer {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+            height: 0;
+            overflow: hidden;
+        }
+        #videoPlayer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        .lecture-checkbox {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            border-radius: 3px;
+        }
+        .completed-lecture {
+            text-decoration: line-through;
+            color: #6b7280;
+        }
+        .quiz-btn-container {
+            display: none; /* Hidden by default */
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 font-sans">
+
+    <!-- Navbar -->
+    <nav class="bg-white shadow-md p-4 flex justify-between items-center sticky top-0 z-50">
+        <div class="flex items-center space-x-4">
+            <a href="index.html" class="text-2xl font-bold text-indigo-600">SkillTrek.</a>
+            <span class="hidden md:block text-gray-600">Operating Systems Course</span>
+        </div>
+        
+        <div class="flex items-center space-x-4">
+            <button class="hidden md:flex items-center text-gray-600 hover:text-indigo-600">
+                <i class="fas fa-share-alt mr-2"></i> Share
+            </button>
+            <button class="hidden md:flex items-center text-gray-600 hover:text-indigo-600">
+                <i class="fas fa-heart mr-2"></i> Wishlist
+            </button>
+            <button class="hidden md:flex items-center text-gray-600 hover:text-indigo-600">
+                <i class="fas fa-gift mr-2"></i> Gift this course
+            </button>
+        </div>
+    </nav>
+
+    <!-- Progress Bar -->
+    <div class="progress-bar w-full">
+        <div id="progressFill" class="progress-fill" style="width: 0%"></div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="flex flex-col md:flex-row">
+        <!-- Left Sidebar - Course Content -->
+        <div class="w-full md:w-1/4 bg-white shadow-md sidebar">
+            <div class="p-4 border-b">
+                <h3 class="font-bold text-lg">Course Content</h3>
+                <div class="flex justify-between items-center mt-2">
+                    <span class="text-sm text-gray-600">3 sections • 6 lectures • 5h 10m total length</span>
+                    <span id="progressText" class="text-sm font-medium">0% complete</span>
+                </div>
+            </div>
+            
+            <div class="overflow-y-auto">
+                <!-- Section 1 -->
+                <div class="border-b">
+                    <button class="w-full p-4 text-left font-medium flex justify-between items-center bg-gray-50">
+                        <span>1. Introduction to Operating Systems</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="pl-4">
+                        <div class="lecture-item active-lecture p-3 flex items-center cursor-pointer" data-video-id="vBURTt97EkA">
+                            <input type="checkbox" class="lecture-checkbox mr-2" data-lecture-id="lecture1">
+                            <i class="fas fa-play-circle text-indigo-600 mr-3"></i>
+                            <span class="lecture-title">1.1 What is an Operating System?</span>
+                            <span class="ml-auto text-sm text-gray-500">10:25</span>
+                        </div>
+                        <div class="lecture-item p-3 flex items-center cursor-pointer" data-video-id="mXw9ruZaxzQ">
+                            <input type="checkbox" class="lecture-checkbox mr-2" data-lecture-id="lecture2">
+                            <i class="fas fa-play-circle text-gray-400 mr-3"></i>
+                            <span class="lecture-title">1.2 History of Operating Systems</span>
+                            <span class="ml-auto text-sm text-gray-500">15:42</span>
+                        </div>
+                        <div class="lecture-item p-3 flex items-center cursor-pointer" data-video-id="26QPDBe-NB8">
+                            <input type="checkbox" class="lecture-checkbox mr-2" data-lecture-id="lecture3">
+                            <i class="fas fa-play-circle text-gray-400 mr-3"></i>
+                            <span class="lecture-title">1.3 Types of Operating Systems</span>
+                            <span class="ml-auto text-sm text-gray-500">12:18</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Section 2 -->
+                <div class="border-b">
+                    <button class="w-full p-4 text-left font-medium flex justify-between items-center bg-gray-50">
+                        <span>2. Process Management</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="pl-4 hidden">
+                        <div class="lecture-item p-3 flex items-center cursor-pointer" data-video-id="jZ_6PsSgIBE">
+                            <input type="checkbox" class="lecture-checkbox mr-2" data-lecture-id="lecture4">
+                            <i class="fas fa-play-circle text-gray-400 mr-3"></i>
+                            <span class="lecture-title">2.1 Processes and Threads</span>
+                            <span class="ml-auto text-sm text-gray-500">18:30</span>
+                        </div>
+                        <div class="lecture-item p-3 flex items-center cursor-pointer" data-video-id="exbKr6fnoUw">
+                            <input type="checkbox" class="lecture-checkbox mr-2" data-lecture-id="lecture5">
+                            <i class="fas fa-play-circle text-gray-400 mr-3"></i>
+                            <span class="lecture-title">2.2 Process Scheduling</span>
+                            <span class="ml-auto text-sm text-gray-500">22:15</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Section 3 -->
+                <div class="border-b">
+                    <button class="w-full p-4 text-left font-medium flex justify-between items-center bg-gray-50">
+                        <span>3. Memory Management</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="pl-4 hidden">
+                        <div class="lecture-item p-3 flex items-center cursor-pointer" data-video-id="2quKyPnUShQ">
+                            <input type="checkbox" class="lecture-checkbox mr-2" data-lecture-id="lecture6">
+                            <i class="fas fa-play-circle text-gray-400 mr-3"></i>
+                            <span class="lecture-title">3.1 Memory Allocation</span>
+                            <span class="ml-auto text-sm text-gray-500">14:50</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Video Area -->
+        <div class="w-full md:w-3/4 p-4">
+            <!-- Video Container with proper aspect ratio -->
+            <div id="videoContainer" class="rounded-lg overflow-hidden shadow-lg">
+                <iframe id="videoPlayer" 
+                        src="https://www.youtube.com/embed/vBURTt97EkA?enablejsapi=1&controls=1" 
+                        frameborder="0" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                        allowfullscreen></iframe>
+            </div>
+            
+            <!-- Video Title and Description -->
+            <div id="lectureInfo" class="mt-4 bg-white p-6 rounded-lg shadow">
+                <h1 class="text-2xl font-bold">1.1 What is an Operating System?</h1>
+                <div class="flex items-center mt-2">
+                    <span class="bg-indigo-100 text-indigo-800 text-xs px-2 py-1 rounded">Lecture</span>
+                    <span class="ml-4 text-gray-600"><i class="far fa-clock mr-1"></i> 10:25</span>
+                </div>
+                
+                <div class="mt-6">
+                    <h3 class="font-bold text-lg mb-2">About this lecture</h3>
+                    <p class="text-gray-700">
+                        In this lecture, we'll explore the fundamental concepts of operating systems. 
+                        You'll learn what an operating system is, its main functions, and why it's 
+                        essential for computer operation.
+                    </p>
+                </div>
+                
+                <!-- Notes Section -->
+                <div class="mt-6 pt-4 border-t">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="font-bold text-lg">Lecture Notes</h3>
+                        <button id="addNoteBtn" class="bg-indigo-600 text-white px-3 py-1 rounded text-sm flex items-center">
+                            <i class="fas fa-plus mr-1"></i> Add Note at Current Time
+                        </button>
+                    </div>
+                    
+                    <div id="notesContainer" class="space-y-4">
+                        <!-- Notes will be added here dynamically -->
+                    </div>
+                    
+                    <!-- Add Note Modal -->
+                    <div id="noteModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                        <div class="bg-white p-6 rounded-lg w-full max-w-md">
+                            <div class="flex justify-between items-center mb-4">
+                                <h3 class="font-bold text-lg">Add Note at <span id="noteTimeDisplay">0:00</span></h3>
+                                <button id="closeNoteModal" class="text-gray-500 hover:text-gray-700">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                            <textarea id="noteContent" class="w-full border rounded p-2 mb-4" rows="4" placeholder="Write your note here..."></textarea>
+                            <div class="flex justify-end space-x-2">
+                                <button id="cancelNote" class="px-4 py-2 border rounded">Cancel</button>
+                                <button id="saveNote" class="px-4 py-2 bg-indigo-600 text-white rounded">Save Note</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Navigation Buttons -->
+            <div class="flex justify-between mt-6">
+                <button id="prevLecture" class="bg-gray-200 hover:bg-gray-300 px-4 py-2 rounded flex items-center">
+                    <i class="fas fa-arrow-left mr-2"></i> Previous
+                </button>
+                <div id="quizBtnContainer" class="quiz-btn-container">
+                    <a href="quiz.html" class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-lg shadow-md transition duration-300 flex items-center">
+                        <i class="fas fa-trophy mr-2"></i> Take Quiz
+                    </a>
+                </div>
+                <button id="nextLecture" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded flex items-center">
+                    Next <i class="fas fa-arrow-right ml-2"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Load YouTube IFrame API -->
+    <script>
+        // Load YouTube API script
+        const tag = document.createElement('script');
+        tag.src = "https://www.youtube.com/iframe_api";
+        const firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+    </script>
+
+    <script>
+        // Global variables
+        let player;
+        let notes = {};
+        let currentVideoId = 'vBURTt97EkA'; // Current YouTube video ID
+        let currentLecture = document.querySelector('.active-lecture');
+        let allLectures = Array.from(document.querySelectorAll('.lecture-item'));
+        let currentLectureIndex = allLectures.indexOf(currentLecture);
+        let progressData = JSON.parse(localStorage.getItem('courseProgress')) || {
+            completedLectures: [],
+            progress: 0
+        };
+
+        // Lecture data (title, description, duration for each lecture)
+        const lectureData = {
+            'vBURTt97EkA': {
+                title: '1.1 What is an Operating System?',
+                duration: '10:25',
+                description: 'In this lecture, we\'ll explore the fundamental concepts of operating systems. You\'ll learn what an operating system is, its main functions, and why it\'s essential for computer operation.'
+            },
+            'mXw9ruZaxzQ': {
+                title: '1.2 History of Operating Systems',
+                duration: '15:42',
+                description: 'This lecture covers the evolution of operating systems from early batch systems to modern multi-tasking OS. We\'ll examine key milestones and innovations.'
+            },
+            '26QPDBe-NB8': {
+                title: '1.3 Types of Operating Systems',
+                duration: '12:18',
+                description: 'Learn about different types of operating systems including batch, time-sharing, distributed, real-time, and network operating systems.'
+            },
+            'jZ_6PsSgIBE': {
+                title: '2.1 Processes and Threads',
+                duration: '18:30',
+                description: 'This lecture explains the concepts of processes and threads, how they differ, and how they are managed by the operating system.'
+            },
+            'exbKr6fnoUw': {
+                title: '2.2 Process Scheduling',
+                duration: '22:15',
+                description: 'Learn about different scheduling algorithms used by operating systems to allocate processor time among processes.'
+            },
+            '2quKyPnUShQ': {
+                title: '3.1 Memory Allocation',
+                duration: '14:50',
+                description: 'This lecture covers memory allocation techniques, including contiguous allocation, paging, and segmentation.'
+            }
+        };
+
+        // Initialize the UI based on saved data
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeProgress();
+            loadNotesFromStorage();
+            loadNotesForVideo(currentVideoId);
+            setupNoteEventListeners();
+            checkIfLastLecture();
+        });
+
+        // Check if current lecture is the last one to show quiz button
+        function checkIfLastLecture() {
+            const quizBtnContainer = document.getElementById('quizBtnContainer');
+            if (currentLectureIndex === allLectures.length - 1) {
+                quizBtnContainer.style.display = 'block';
+                document.getElementById('nextLecture').style.display = 'none';
+            } else {
+                quizBtnContainer.style.display = 'none';
+                document.getElementById('nextLecture').style.display = 'flex';
+            }
+        }
+
+        // Initialize progress from saved data
+        function initializeProgress() {
+            const checkboxes = document.querySelectorAll('.lecture-checkbox');
+            
+            checkboxes.forEach(checkbox => {
+                const lectureId = checkbox.getAttribute('data-lecture-id');
+                if (progressData.completedLectures.includes(lectureId)) {
+                    checkbox.checked = true;
+                    checkbox.closest('.lecture-item').querySelector('.lecture-title').classList.add('completed-lecture');
+                }
+            });
+            
+            updateProgressBar();
+        }
+
+        // Update progress bar
+        function updateProgressBar() {
+            const totalLectures = document.querySelectorAll('.lecture-checkbox').length;
+            const completedLectures = progressData.completedLectures.length;
+            const progress = totalLectures === 0 ? 0 : Math.round((completedLectures / totalLectures) * 100);
+            
+            document.getElementById('progressFill').style.width = `${progress}%`;
+            document.getElementById('progressText').textContent = `${progress}% complete`;
+            
+            progressData.progress = progress;
+            localStorage.setItem('courseProgress', JSON.stringify(progressData));
+        }
+
+        // Toggle lecture sections
+        document.querySelectorAll('.sidebar button').forEach(button => {
+            button.addEventListener('click', () => {
+                const content = button.nextElementSibling;
+                const icon = button.querySelector('i');
+                
+                if (content.classList.contains('hidden')) {
+                    content.classList.remove('hidden');
+                    icon.classList.remove('fa-chevron-down');
+                    icon.classList.add('fa-chevron-up');
+                } else {
+                    content.classList.add('hidden');
+                    icon.classList.remove('fa-chevron-up');
+                    icon.classList.add('fa-chevron-down');
+                }
+            });
+        });
+
+        // Set up lecture checkboxes
+        document.querySelectorAll('.lecture-checkbox').forEach(checkbox => {
+            checkbox.addEventListener('change', function(e) {
+                e.stopPropagation(); // Prevent clicking checkbox from triggering lecture change
+                
+                const lectureId = this.getAttribute('data-lecture-id');
+                const lectureTitle = this.closest('.lecture-item').querySelector('.lecture-title');
+                
+                if (this.checked) {
+                    if (!progressData.completedLectures.includes(lectureId)) {
+                        progressData.completedLectures.push(lectureId);
+                    }
+                    lectureTitle.classList.add('completed-lecture');
+                } else {
+                    progressData.completedLectures = progressData.completedLectures.filter(id => id !== lectureId);
+                    lectureTitle.classList.remove('completed-lecture');
+                }
+                
+                updateProgressBar();
+            });
+        });
+        
+        // Change active lecture
+        document.querySelectorAll('.lecture-item').forEach(item => {
+            item.addEventListener('click', (e) => {
+                // Ignore clicks on checkbox
+                if (e.target.type === 'checkbox') return;
+                
+                // Update active lecture UI
+                document.querySelectorAll('.lecture-item').forEach(i => {
+                    i.classList.remove('active-lecture');
+                    const icon = i.querySelector('i');
+                    icon.classList.remove('text-indigo-600');
+                    icon.classList.add('text-gray-400');
+                });
+                
+                item.classList.add('active-lecture');
+                const icon = item.querySelector('i');
+                icon.classList.remove('text-gray-400');
+                icon.classList.add('text-indigo-600');
+                
+                // Update current lecture tracking
+                currentLecture = item;
+                currentLectureIndex = allLectures.indexOf(currentLecture);
+                currentVideoId = item.dataset.videoId;
+                
+                // Load the new video
+                player.loadVideoById(currentVideoId);
+                
+                // Update lecture info
+                updateLectureInfo(currentVideoId);
+                
+                // Load notes for this video
+                loadNotesForVideo(currentVideoId);
+                
+                // Check if this is the last lecture to show quiz button
+                checkIfLastLecture();
+            });
+        });
+
+        // YouTube Player API
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('videoPlayer', {
+                events: {
+                    'onReady': onPlayerReady,
+                    'onStateChange': onPlayerStateChange
+                }
+            });
+        }
+        
+        function onPlayerReady(event) {
+            // Video player is ready
+            loadNotesForVideo(currentVideoId);
+        }
+        
+        function onPlayerStateChange(event) {
+            // Handle player state changes if needed
+            // For example, could mark as completed when video ends
+            if (event.data === YT.PlayerState.ENDED) {
+                const currentCheckbox = document.querySelector(`.active-lecture .lecture-checkbox`);
+                if (currentCheckbox && !currentCheckbox.checked) {
+                    currentCheckbox.checked = true;
+                    currentCheckbox.dispatchEvent(new Event('change'));
+                }
+            }
+        }
+        
+        // Update lecture information
+        function updateLectureInfo(videoId) {
+            const lecture = lectureData[videoId] || {
+                title: 'Lecture',
+                duration: '0:00',
+                description: 'No description available.'
+            };
+            
+            document.querySelector('#lectureInfo h1').textContent = lecture.title;
+            document.querySelector('#lectureInfo .text-gray-600').innerHTML = `<i class="far fa-clock mr-1"></i> ${lecture.duration}`;
+            document.querySelector('#lectureInfo .text-gray-700').textContent = lecture.description;
+        }
+        
+        // Time formatting
+        function formatTime(seconds) {
+            const mins = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+        }
+
+        // -------------------- Note-Taking Functionality --------------------
+        
+        // Load all saved notes from localStorage
+        function loadNotesFromStorage() {
+            const savedNotes = localStorage.getItem('videoNotes');
+            if (savedNotes) {
+                notes = JSON.parse(savedNotes);
+            }
+        }
+        
+        // Load notes for a specific video
+        function loadNotesForVideo(videoId) {
+            const notesContainer = document.getElementById('notesContainer');
+            notesContainer.innerHTML = '';
+            
+            if (notes[videoId] && notes[videoId].length > 0) {
+                // Sort notes by timestamp (ascending order)
+                notes[videoId].sort((a, b) => a.timestamp - b.timestamp).forEach(note => {
+                    addNoteToDOM(note.timestamp, note.content, note.id);
+                });
+            } else {
+                notesContainer.innerHTML = '<p class="text-gray-500">No notes yet. Add your first note!</p>';
+            }
+        }
+        
+        // Add a note to the DOM
+        function addNoteToDOM(timestamp, content, noteId) {
+            const notesContainer = document.getElementById('notesContainer');
+            
+            // Remove "no notes" message if it exists
+            if (notesContainer.querySelector('p.text-gray-500')) {
+                notesContainer.innerHTML = '';
+            }
+            
+            const noteElement = document.createElement('div');
+            noteElement.className = 'note-item bg-gray-50 p-3 rounded border mb-3';
+            noteElement.dataset.noteId = noteId;
+            noteElement.innerHTML = `
+                <div class="flex justify-between items-start">
+                    <span class="note-timestamp font-medium text-indigo-600" data-time="${timestamp}">${formatTime(timestamp)}</span>
+                    <button class="text-gray-400 hover:text-red-500 delete-note">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+                <p class="mt-2 text-gray-700">${content}</p>
+            `;
+            
+            notesContainer.appendChild(noteElement);
+            
+            // Add event listeners to the new note
+            addNoteEventListeners();
+        }
+        
+        // Save a new note
+        function saveNote(videoId, timestamp, content) {
+            const noteId = Date.now().toString();
+            
+            if (!notes[videoId]) {
+                notes[videoId] = [];
+            }
+            
+            const noteData = {
+                id: noteId,
+                timestamp: timestamp,
+                content: content
+            };
+            
+            notes[videoId].push(noteData);
+            localStorage.setItem('videoNotes', JSON.stringify(notes));
+            
+            return noteId;
+        }
+        
+        // Delete a note
+        function deleteNote(noteId) {
+            for (const videoId in notes) {
+                notes[videoId] = notes[videoId].filter(note => note.id !== noteId);
+            }
+            localStorage.setItem('videoNotes', JSON.stringify(notes));
+        }
+        
+        // Set up all event listeners related to note-taking
+        function setupNoteEventListeners() {
+            // Add note button
+            document.getElementById('addNoteBtn').addEventListener('click', () => {
+                if (player && typeof player.getCurrentTime === 'function') {
+                    const currentTime = Math.floor(player.getCurrentTime());
+                    document.getElementById('noteTimeDisplay').textContent = formatTime(currentTime);
+                    document.getElementById('noteModal').classList.remove('hidden');
+                    document.getElementById('noteContent').focus();
+                } else {
+                    console.error('YouTube player not ready');
+                    alert('Video player is not ready. Please try again in a moment.');
+                }
+            });
+            
+            // Close note modal buttons
+            document.getElementById('closeNoteModal').addEventListener('click', closeNoteModal);
+            document.getElementById('cancelNote').addEventListener('click', closeNoteModal);
+            
+            // Save note button
+            document.getElementById('saveNote').addEventListener('click', () => {
+                const noteContent = document.getElementById('noteContent').value.trim();
+                if (noteContent) {
+                    try {
+                        const currentTime = Math.floor(player.getCurrentTime());
+                        const noteId = saveNote(currentVideoId, currentTime, noteContent);
+                        addNoteToDOM(currentTime, noteContent, noteId);
+                        closeNoteModal();
+                    } catch (error) {
+                        console.error('Error saving note:', error);
+                        alert('Could not save note. Please try again.');
+                    }
+                }
+            });
+            
+            // Allow Enter key to save note
+            document.getElementById('noteContent').addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    document.getElementById('saveNote').click();
+                }
+            });
+        }
+        
+        function addNoteEventListeners() {
+            // Add click handlers for timestamps and delete buttons
+            document.querySelectorAll('.note-timestamp').forEach(timestamp => {
+                timestamp.addEventListener('click', (e) => {
+                    const time = parseInt(e.target.getAttribute('data-time'));
+                    if (player && typeof player.seekTo === 'function') {
+                        player.seekTo(time, true);
+                        player.playVideo();
+                    }
+                });
+            });
+            
+            document.querySelectorAll('.delete-note').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    const noteElement = e.target.closest('.note-item');
+                    const noteId = noteElement.dataset.noteId;
+                    
+                    if (confirm('Delete this note?')) {
+                        deleteNote(noteId);
+                        noteElement.remove();
+                        
+                        // Show "no notes" message if last note was deleted
+                        if (document.getElementById('notesContainer').children.length === 0) {
+                            document.getElementById('notesContainer').innerHTML = 
+                                '<p class="text-gray-500">No notes yet. Add your first note!</p>';
+                        }
+                    }
+                });
+            });
+        }
+        
+        function closeNoteModal() {
+            document.getElementById('noteModal').classList.add('hidden');
+            document.getElementById('noteContent').value = '';
+        }
+
+        // Navigation between lectures
+        document.getElementById('prevLecture').addEventListener('click', () => {
+            if (currentLectureIndex > 0) {
+                allLectures[currentLectureIndex - 1].click();
+            }
+        });
+
+        document.getElementById('nextLecture').addEventListener('click', () => {
+            if (currentLectureIndex < allLectures.length - 1) {
+                allLectures[currentLectureIndex + 1].click();
+            }
+        });
+    </script>
+</body>
+</html>

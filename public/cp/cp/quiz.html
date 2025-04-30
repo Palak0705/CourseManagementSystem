@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Operating Systems Quiz | SkillTrek</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .quiz-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .question-card {
+            transition: all 0.3s ease;
+        }
+        .question-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+        .option-label {
+            transition: all 0.2s ease;
+        }
+        .option-label:hover {
+            background-color: #f3f4f6;
+        }
+        .option-input:checked + .option-label {
+            background-color: #e0e7ff;
+            border-color: #4f46e5;
+        }
+        .progress-bar {
+            height: 6px;
+            background-color: #e5e7eb;
+        }
+        .progress-fill {
+            height: 100%;
+            background-color: #4f46e5;
+            transition: width 0.3s ease;
+        }
+        .result-card.correct {
+            background-color: #f0fdf4;
+            border-color: #86efac;
+        }
+        .result-card.incorrect {
+            background-color: #fef2f2;
+            border-color: #fca5a5;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 font-sans">
+    <!-- Quiz Page -->
+    <div id="quizPage">
+        <!-- Navbar -->
+        <nav class="bg-white shadow-md p-4 flex justify-between items-center sticky top-0 z-50">
+            <div class="flex items-center space-x-4">
+                <a href="index.html" class="text-2xl font-bold text-indigo-600">SkillTrek.</a>
+                <span class="hidden md:block text-gray-600">Operating Systems Quiz</span>
+            </div>
+        </nav>
+
+        <!-- Quiz Container -->
+        <div class="quiz-container p-6">
+            <!-- Quiz Header -->
+            <div class="text-center mb-8">
+                <h1 class="text-3xl font-bold text-gray-800 mb-2">Operating Systems Quiz</h1>
+                <p class="text-gray-600">Test your knowledge of operating systems concepts</p>
+                
+                <!-- Progress Bar -->
+                <div class="mt-6">
+                    <div class="flex justify-between mb-1">
+                        <span class="text-sm font-medium">Quiz Progress</span>
+                        <span id="progressText" class="text-sm font-medium">0/5</span>
+                    </div>
+                    <div class="progress-bar w-full rounded-full">
+                        <div id="progressFill" class="progress-fill rounded-full" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quiz Form -->
+            <form id="quizForm" class="space-y-6">
+                <!-- Question 1 -->
+                <div class="question-card bg-white p-6 rounded-lg shadow-md">
+                    <div class="flex items-start">
+                        <span class="bg-indigo-100 text-indigo-800 font-medium rounded-full w-8 h-8 flex items-center justify-center mr-4">1</span>
+                        <div class="flex-1">
+                            <h3 class="text-lg font-semibold mb-4">What is the primary function of an operating system?</h3>
+                            <div class="space-y-3">
+                                <div>
+                                    <input type="radio" id="q1-option1" name="q1" value="A" class="option-input hidden">
+                                    <label for="q1-option1" class="option-label block p-3 border rounded-lg cursor-pointer">
+                                        <span class="font-medium">A.</span> To manage computer hardware and software resources
+                                    </label>
+                                </div>
+                                <div>
+                                    <input type="radio" id="q1-option2" name="q1" value="B" class="option-input hidden">
+                                    <label for="q1-option2" class="option-label block p-3 border rounded-lg cursor-pointer">
+                                        <span class="font-medium">B.</span> To provide internet connectivity
+                                    </label>
+                                </div>
+                                <div>
+                                    <input type="radio" id="q1-option3" name="q1" value="C" class="option-input hidden">
+                                    <label for="q1-option3" class="option-label block p-3 border rounded-lg cursor-pointer">
+                                        <span class="font-medium">C.</span> To create documents and spreadsheets
+                                    </label>
+                                </div>
+                                <div>
+                                    <input type="radio" id="q1-option4" name="q1" value="D" class="option-input hidden">
+                                    <label for="q1-option4" class="option-label block p-3 border rounded-lg cursor-pointer">
+                                        <span class="font-medium">D.</span> To design computer hardware
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Question 2 -->
+                <div class="question-card bg-white p-6 rounded-lg shadow-md">
+                    <div class="flex items-start">
+                        <span class="bg-indigo-100 text-indigo-800 font-medium rounded-full w-8 h-8 flex items-center justify-center mr-4">2</span>
+                        <div class="flex-1">
+                            <h3 class="text-lg font-semibold mb-4">Which of these is NOT a type of operating system?</h3>
+                            <div class="space-y-3">
+                                <div>
+                                    <input type="radio" id="q2-option1" name="q2" value="A" class="option-input hidden">
+                                    <label for="q2-option1" class="option-label block p-3 border rounded-lg cursor-pointer">
+                                        <span class="font-medium">A.</span> Batch operating system
+                                    </label>
+                                </div>
+                                <div>
+                                    <input type="radio" id="q2-option2" name="q2" value="B" class="option-input hidden">
+                                    <label for="q2-option2" class="option-label block p-3 border rounded-lg cursor-pointer">
+                                        <span class="font-medium">B.</span> Time-sharing operating system
+                                    </label>
+                                </div>
+                                <div>
+                                    <input type="radio" id="q2-option3" name="q2" value="C" class="option-input hidden">
+                                    <label for="q2-option3" class="option-label block p-3 border rounded-lg cursor-pointer">
+                                        <span class="font-medium">C.</span> Spreadsheet operating system
+                                    </label>
+                                </div>
+                                <div>
+                                    <input type="radio" id="q2-option4" name="q2" value="D" class="option-input hidden">
+                                    <label for="q2-option4" class="option-label block p-3 border rounded-lg cursor-pointer">
+                                        <span class="font-medium">D.</span> Real-time operating system
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Question 3 -->
+                <div class="question-card bg-white p-6 rounded-lg shadow-md">
+                    <div class="flex items-start">
+                        <span class="bg-indigo-100 text-indigo-800 font-medium rounded-full w-8 h-8 flex items-center justify-center mr-4">3</span>
+                        <div class="flex-1">
+                            <h3 class="text-lg font-semibold mb-4">What is the main difference between a process and a thread?</h3>
+                            <div class="space-y-3">
+                                <div>
+                                    <input type="radio" id="q3-option1" name="q3" value="A" class="option-input hidden">
+                                    <label for="q3-option1" class="option-label block p-3 border rounded-lg cursor-pointer">
+                                        <span class="font-medium">A.</span> A process is an instance of a program in execution, while a thread is a subset of a process
+                                    </label>
+                                </div>
+                                <div>
+                                    <input type="radio" id="q3-option2" name="q3" value="B" class="option-input hidden">
+                                    <label for="q3-option2" class="option-label block p-3 border rounded-lg cursor-pointer">
+                                        <span class="font-medium">B.</span> A thread has its own address space, while a process shares address space with other processes
+                                    </label>
+                                </div>
+                                <div>
+                                    <input type="radio" id="q3-option3" name="q3" value="C" class="option-input hidden">
+                                    <label for="q3-option3" class="option-label block p-3 border rounded-lg cursor-pointer">
+                                        <span class="font-medium">C.</span> Processes are faster to create than threads
+                                    </label>
+                                </div>
+                                <div>
+                                    <input type="radio" id="q3-option4" name="q3" value="D" class="option-input hidden">
+                                    <label for="q3-option4" class="option-label block p-3 border rounded-lg cursor-pointer">
+                                        <span class="font-medium">D.</span> There is no difference between them
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Question 4 -->
+                <div class="question-card bg-white p-6 rounded-lg shadow-md">
+                    <div class="flex items-start">
+                        <span class="bg-indigo-100 text-indigo-800 font-medium rounded-full w-8 h-8 flex items-center justify-center mr-4">4</span>
+                        <div class="flex-1">
+                            <h3 class="text-lg font-semibold mb-4">Which scheduling algorithm allocates the CPU to the process that requests it first?</h3>
+                            <div class="space-y-3">
+                                <div>
+                                    <input type="radio" id="q4-option1" name="q4" value="A" class="option-input hidden">
+                                    <label for="q4-option1" class="option-label block p-3 border rounded-lg cursor-pointer">
+                                        <span class="font-medium">A.</span> First-Come, First-Served (FCFS)
+                                    </label>
+                                </div>
+                                <div>
+                                    <input type="radio" id="q4-option2" name="q4" value="B" class="option-input hidden">
+                                    <label for="q4-option2" class="option-label block p-3 border rounded-lg cursor-pointer">
+                                        <span class="font-medium">B.</span> Round Robin
+                                    </label>
+                                </div>
+                                <div>
+                                    <input type="radio" id="q4-option3" name="q4" value="C" class="option-input hidden">
+                                    <label for="q4-option3" class="option-label block p-3 border rounded-lg cursor-pointer">
+                                        <span class="font-medium">C.</span> Shortest Job First
+                                    </label>
+                                </div>
+                                <div>
+                                    <input type="radio" id="q4-option4" name="q4" value="D" class="option-input hidden">
+                                    <label for="q4-option4" class="option-label block p-3 border rounded-lg cursor-pointer">
+                                        <span class="font-medium">D.</span> Priority Scheduling
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Question 5 -->
+                <div class="question-card bg-white p-6 rounded-lg shadow-md">
+                    <div class="flex items-start">
+                        <span class="bg-indigo-100 text-indigo-800 font-medium rounded-full w-8 h-8 flex items-center justify-center mr-4">5</span>
+                        <div class="flex-1">
+                            <h3 class="text-lg font-semibold mb-4">What is the purpose of memory allocation in an operating system?</h3>
+                            <div class="space-y-3">
+                                <div>
+                                    <input type="radio" id="q5-option1" name="q5" value="A" class="option-input hidden">
+                                    <label for="q5-option1" class="option-label block p-3 border rounded-lg cursor-pointer">
+                                        <span class="font-medium">A.</span> To manage how programs are loaded into memory for execution
+                                    </label>
+                                </div>
+                                <div>
+                                    <input type="radio" id="q5-option2" name="q5" value="B" class="option-input hidden">
+                                    <label for="q5-option2" class="option-label block p-3 border rounded-lg cursor-pointer">
+                                        <span class="font-medium">B.</span> To determine the price of RAM modules
+                                    </label>
+                                </div>
+                                <div>
+                                    <input type="radio" id="q5-option3" name="q5" value="C" class="option-input hidden">
+                                    <label for="q5-option3" class="option-label block p-3 border rounded-lg cursor-pointer">
+                                        <span class="font-medium">C.</span> To design the physical layout of memory chips
+                                    </label>
+                                </div>
+                                <div>
+                                    <input type="radio" id="q5-option4" name="q5" value="D" class="option-input hidden">
+                                    <label for="q5-option4" class="option-label block p-3 border rounded-lg cursor-pointer">
+                                        <span class="font-medium">D.</span> To calculate the total storage capacity of a computer
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="text-center mt-8">
+                    <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-3 px-8 rounded-lg shadow-md transition duration-300">
+                        Submit Quiz
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Results Page (initially hidden) -->
+    <div id="resultsPage" class="hidden">
+        <!-- Navbar -->
+        <nav class="bg-white shadow-md p-4 flex justify-between items-center sticky top-0 z-50">
+            <div class="flex items-center space-x-4">
+                <a href="index.html" class="text-2xl font-bold text-indigo-600">SkillTrek.</a>
+                <span class="hidden md:block text-gray-600">Quiz Results</span>
+            </div>
+        </nav>
+
+        <!-- Results Container -->
+        <div class="quiz-container p-6">
+            <div class="text-center mb-8">
+                <h1 class="text-3xl font-bold text-gray-800 mb-2">Quiz Results</h1>
+                <p class="text-gray-600">Here's how you performed on the Operating Systems Quiz</p>
+            </div>
+
+            <!-- Score Summary -->
+            <div class="bg-white p-6 rounded-lg shadow-md mb-8">
+                <div id="scoreSummary" class="text-center">
+                    <!-- Score summary will be inserted here -->
+                </div>
+            </div>
+
+            <!-- Detailed Results -->
+            <div class="space-y-6">
+                <h2 class="text-xl font-semibold text-gray-800">Detailed Results</h2>
+                
+                <div id="detailedResults">
+                    <!-- Detailed results will be inserted here -->
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="flex flex-col sm:flex-row justify-center gap-4 mt-8">
+                    <button id="retakeQuiz" class="bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-6 rounded-lg shadow-md transition duration-300">
+                        <i class="fas fa-redo mr-2"></i> Retake Quiz
+                    </button>
+                    <a href="index.html" class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-2 px-6 rounded-lg shadow-md transition duration-300 text-center">
+                        <i class="fas fa-home mr-2"></i> Return Home
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Correct answers
+        const correctAnswers = {
+            q1: "A",
+            q2: "C",
+            q3: "A",
+            q4: "A",
+            q5: "A"
+        };
+
+        // Explanation for answers
+        const answerExplanations = {
+            q1: "The primary function of an operating system is to manage computer hardware and software resources and provide common services for computer programs.",
+            q2: "Spreadsheet operating system is not a valid type of operating system. The other options are all legitimate types of operating systems.",
+            q3: "A process is an instance of a program in execution with its own memory space, while a thread is a lightweight process that exists within a process and shares the process's resources.",
+            q4: "First-Come, First-Served (FCFS) is the simplest scheduling algorithm that allocates the CPU to processes in the order they arrive in the ready queue.",
+            q5: "Memory allocation in an operating system manages how programs are loaded into memory for execution, ensuring efficient use of available memory resources."
+        };
+
+        // Question texts for results page
+        const questionTexts = {
+            q1: "What is the primary function of an operating system?",
+            q2: "Which of these is NOT a type of operating system?",
+            q3: "What is the main difference between a process and a thread?",
+            q4: "Which scheduling algorithm allocates the CPU to the process that requests it first?",
+            q5: "What is the purpose of memory allocation in an operating system?"
+        };
+
+        // Option texts for results page
+        const optionTexts = {
+            q1: {
+                A: "To manage computer hardware and software resources",
+                B: "To provide internet connectivity",
+                C: "To create documents and spreadsheets",
+                D: "To design computer hardware"
+            },
+            q2: {
+                A: "Batch operating system",
+                B: "Time-sharing operating system",
+                C: "Spreadsheet operating system",
+                D: "Real-time operating system"
+            },
+            q3: {
+                A: "A process is an instance of a program in execution, while a thread is a subset of a process",
+                B: "A thread has its own address space, while a process shares address space with other processes",
+                C: "Processes are faster to create than threads",
+                D: "There is no difference between them"
+            },
+            q4: {
+                A: "First-Come, First-Served (FCFS)",
+                B: "Round Robin",
+                C: "Shortest Job First",
+                D: "Priority Scheduling"
+            },
+            q5: {
+                A: "To manage how programs are loaded into memory for execution",
+                B: "To determine the price of RAM modules",
+                C: "To design the physical layout of memory chips",
+                D: "To calculate the total storage capacity of a computer"
+            }
+        };
+
+        // Track answered questions
+        let answeredQuestions = 0;
+        const totalQuestions = Object.keys(correctAnswers).length;
+
+        // Update progress
+        function updateProgress() {
+            // Count how many questions have been answered
+            answeredQuestions = 0;
+            const form = document.getElementById('quizForm');
+            for (let i = 1; i <= totalQuestions; i++) {
+                if (form[`q${i}`].value) {
+                    answeredQuestions++;
+                }
+            }
+            
+            const progressPercentage = Math.round((answeredQuestions / totalQuestions) * 100);
+            document.getElementById('progressFill').style.width = `${progressPercentage}%`;
+            document.getElementById('progressText').textContent = `${answeredQuestions}/${totalQuestions}`;
+        }
+
+        // Check if all questions are answered
+        function allQuestionsAnswered() {
+            return answeredQuestions === totalQuestions;
+        }
+
+        // Calculate score
+        function calculateScore() {
+            const form = document.getElementById('quizForm');
+            let score = 0;
+            
+            for (let i = 1; i <= totalQuestions; i++) {
+                const questionName = `q${i}`;
+                const selectedOption = form.elements[questionName];
+                if (selectedOption.value === correctAnswers[questionName]) {
+                    score++;
+                }
+            }
+            
+            return score;
+        }
+
+        // Show results on separate page
+        function showResults() {
+            const score = calculateScore();
+            const percentage = Math.round((score / totalQuestions) * 100);
+            const form = document.getElementById('quizForm');
+            
+            // Hide quiz page and show results page
+            document.getElementById('quizPage').classList.add('hidden');
+            document.getElementById('resultsPage').classList.remove('hidden');
+            
+            // Create score summary
+            let scoreSummaryHTML = `
+                <div class="text-4xl font-bold mb-2 ${percentage >= 70 ? 'text-green-600' : percentage >= 50 ? 'text-yellow-500' : 'text-red-600'}">
+                    ${percentage}%
+                </div>
+                <div class="text-lg font-medium mb-4">
+                    You scored ${score} out of ${totalQuestions}
+                </div>
+                <div class="w-full bg-gray-200 rounded-full h-4 mb-4">
+                    <div class="bg-indigo-600 h-4 rounded-full" style="width: ${percentage}%"></div>
+                </div>
+                <div class="text-sm text-gray-600">
+                    ${percentage >= 70 ? '🎉 Excellent work! You have a strong understanding of operating systems.' : 
+                      percentage >= 50 ? '👍 Good effort! Review the material to improve your knowledge.' : 
+                      '📚 Keep learning! Consider reviewing the course materials again.'}
+                </div>
+            `;
+            
+            document.getElementById('scoreSummary').innerHTML = scoreSummaryHTML;
+            
+            // Create detailed results
+            let detailedResultsHTML = '';
+            for (let i = 1; i <= totalQuestions; i++) {
+                const questionName = `q${i}`;
+                const selectedOption = form.elements[questionName];
+                const userAnswer = selectedOption.value;
+                const isCorrect = userAnswer === correctAnswers[questionName];
+                
+                detailedResultsHTML += `
+                    <div class="result-card ${isCorrect ? 'correct' : 'incorrect'} border rounded-lg p-4 mb-4">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="font-semibold">Question ${i}: ${questionTexts[questionName]}</h3>
+                            <span class="text-sm font-medium px-2 py-1 rounded ${isCorrect ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}">
+                                ${isCorrect ? 'Correct' : 'Incorrect'}
+                            </span>
+                        </div>
+                        <div class="mb-2">
+                            <div class="text-sm text-gray-600">Your answer:</div>
+                            <div class="font-medium ml-2">${userAnswer}. ${optionTexts[questionName][userAnswer]}</div>
+                        </div>
+                        ${!isCorrect ? `
+                            <div class="mb-2">
+                                <div class="text-sm text-gray-600">Correct answer:</div>
+                                <div class="font-medium ml-2">${correctAnswers[questionName]}. ${optionTexts[questionName][correctAnswers[questionName]]}</div>
+                            </div>
+                        ` : ''}
+                        <div class="text-sm text-gray-700 mt-2 p-2 bg-gray-50 rounded">
+                            <span class="font-medium">Explanation:</span> ${answerExplanations[questionName]}
+                        </div>
+                    </div>
+                `;
+            }
+            
+            document.getElementById('detailedResults').innerHTML = detailedResultsHTML;
+        }
+
+        // Event listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            // Track when an answer is selected
+            document.querySelectorAll('.option-input').forEach(input => {
+                input.addEventListener('change', function() {
+                    updateProgress();
+                });
+            });
+            
+            // Form submission
+            document.getElementById('quizForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                if (!allQuestionsAnswered()) {
+                    alert('Please answer all questions before submitting.');
+                    return;
+                }
+                
+                showResults();
+                
+                // Scroll to top of results page
+                window.scrollTo(0, 0);
+            });
+            
+            // Retake quiz
+            document.getElementById('retakeQuiz').addEventListener('click', function() {
+                // Reset form
+                document.getElementById('quizForm').reset();
+                answeredQuestions = 0;
+                updateProgress();
+                
+                // Show quiz page and hide results page
+                document.getElementById('quizPage').classList.remove('hidden');
+                document.getElementById('resultsPage').classList.add('hidden');
+                
+                // Remove the highlight from selected options
+                document.querySelectorAll('.option-label').forEach(label => {
+                    label.classList.remove('bg-indigo-100', 'border-indigo-500');
+                });
+                
+                // Scroll to top of quiz page
+                window.scrollTo(0, 0);
+            });
+        });
+    </script>
+</body>
+</html>

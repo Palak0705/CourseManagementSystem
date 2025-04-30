@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Cart - Online Courses</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+
+    <!-- Navbar -->
+    <nav class="bg-white p-4 shadow-md">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="index.html" class="text-xl font-semibold">Course Platform</a>
+            <a href="cart.html" class="relative">
+                <span class="text-gray-700">🛒</span>
+                <span id="cart-count" class="absolute -top-2 -right-2 bg-red-500 text-white text-xs px-2 rounded-full">0</span>
+            </a>
+        </div>
+    </nav>
+
+    <!-- Cart Container -->
+    <div class="container mx-auto my-10 p-6 bg-white rounded-lg shadow-lg flex flex-col md:flex-row gap-8">
+        
+        <!-- Course List -->
+        <div class="w-full md:w-3/4">
+            <h2 class="text-2xl font-semibold mb-4">Shopping Cart</h2>
+            <p id="empty-cart-message" class="text-gray-500">Your cart is empty.</p>
+            <div id="cart-items"></div>
+        </div>
+
+        <!-- Order Summary -->
+        <div class="w-full md:w-1/4 bg-gray-100 p-6 rounded-lg shadow-md">
+            <h3 class="text-xl font-semibold mb-4">Total:</h3>
+            <p id="cart-total" class="text-lg font-semibold mb-4">$0.00</p>
+            <button id="checkout-btn" class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition" disabled>Checkout</button>
+        </div>
+
+    </div>
+
+    <!-- Confirmation Dialog -->
+    <div id="confirmation-dialog" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+        <div class="bg-white p-6 rounded-lg shadow-xl max-w-md w-full">
+            <h3 class="text-xl font-semibold mb-4">Confirm Purchase</h3>
+            <p class="mb-6">Are you sure you want to purchase these course(s)?</p>
+            <div class="flex justify-end space-x-4">
+                <button id="cancel-btn" class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-100">Cancel</button>
+                <button id="confirm-btn" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">Yes, Purchase</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript for Dynamic Cart -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const cartItemsContainer = document.getElementById("cart-items");
+            const cartTotal = document.getElementById("cart-total");
+            const cartCount = document.getElementById("cart-count");
+            const emptyCartMessage = document.getElementById("empty-cart-message");
+            const checkoutBtn = document.getElementById("checkout-btn");
+            const confirmationDialog = document.getElementById("confirmation-dialog");
+            const cancelBtn = document.getElementById("cancel-btn");
+            const confirmBtn = document.getElementById("confirm-btn");
+
+            // Load cart from localStorage
+            let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+            function updateCartDisplay() {
+                cartItemsContainer.innerHTML = "";
+                let total = 0;
+
+                if (cart.length === 0) {
+                    emptyCartMessage.style.display = "block";
+                    checkoutBtn.disabled = true;
+                    cartCount.textContent = "0";
+                } else {
+                    emptyCartMessage.style.display = "none";
+                    checkoutBtn.disabled = false;
+                    cartCount.textContent = cart.length;
+                    
+                    cart.forEach((item, index) => {
+                        total += item.price;
+                        const cartItem = document.createElement("div");
+                        cartItem.className = "flex items-center justify-between border-b pb-4 mb-4";
+                        cartItem.innerHTML = `
+                            <img src="${item.image || 'https://source.unsplash.com/100x100/?course'}" alt="Course Image" class="w-28 rounded">
+                            <div class="flex-1 ml-4">
+                                <h3 class="text-lg font-semibold">${item.title}</h3>
+                                <p class="text-gray-600 text-sm">By ${item.instructor}</p>
+                            </div>
+                            <p class="text-lg font-semibold">$${item.price.toFixed(2)}</p>
+                            <button class="text-red-500 hover:text-red-700 text-sm remove-btn" data-index="${index}">Remove</button>
+                        `;
+                        cartItemsContainer.appendChild(cartItem);
+                    });
+                }
+
+                cartTotal.textContent = `$${total.toFixed(2)}`;
+            }
+
+            // Remove item from cart
+            cartItemsContainer.addEventListener("click", function (event) {
+                if (event.target.classList.contains("remove-btn")) {
+                    const index = event.target.getAttribute("data-index");
+                    cart.splice(index, 1);
+                    localStorage.setItem("cart", JSON.stringify(cart));
+                    updateCartDisplay();
+                }
+            });
+
+            // Show confirmation dialog when checkout button is clicked
+            checkoutBtn.addEventListener("click", function() {
+                confirmationDialog.classList.remove("hidden");
+            });
+
+            // Hide confirmation dialog when cancel button is clicked
+            cancelBtn.addEventListener("click", function() {
+                confirmationDialog.classList.add("hidden");
+            });
+
+            // Process purchase when confirm button is clicked
+            confirmBtn.addEventListener("click", function() {
+                // Get purchased courses from cart
+                const purchasedCourses = JSON.parse(localStorage.getItem("purchasedCourses")) || [];
+                
+                // Add all courses from cart to purchased courses
+                cart.forEach(course => {
+                    // Check if course is already purchased to avoid duplicates
+                    const alreadyPurchased = purchasedCourses.some(
+                        purchased => purchased.title === course.title
+                    );
+                    
+                    if (!alreadyPurchased) {
+                        purchasedCourses.push(course);
+                    }
+                });
+                
+                // Save purchased courses to localStorage
+                localStorage.setItem("purchasedCourses", JSON.stringify(purchasedCourses));
+                
+                // Clear the cart
+                localStorage.setItem("cart", JSON.stringify([]));
+                
+                // Hide dialog and update cart display
+                confirmationDialog.classList.add("hidden");
+                cart = [];
+                updateCartDisplay();
+                
+                // Show success message
+                alert("Purchase successful! You can now access your courses.");
+            });
+
+            updateCartDisplay();
+        });
+    </script>
+
+</body>
+</html>

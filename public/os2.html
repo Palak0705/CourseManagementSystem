@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Linux System Administration - SkillTrek</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        // Current course information
+        const currentCourse = {
+            title: "Linux System Administration",
+            price: 899,
+            instructor: "Sarah Johnson",
+            image: "https://source.unsplash.com/800x400/?linux,server"
+        };
+
+        // Function to check if course is already purchased
+        function isCoursePurchased() {
+            const purchasedCourses = JSON.parse(localStorage.getItem('purchasedCourses')) || [];
+            return purchasedCourses.some(course => course.title === currentCourse.title);
+        }
+
+        // Function to add course to cart
+        function addToCart() {
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            
+            // Check if course is already in cart
+            const alreadyInCart = cart.some(item => item.title === currentCourse.title);
+            
+            if (!alreadyInCart) {
+                cart.push(currentCourse);
+                localStorage.setItem('cart', JSON.stringify(cart));
+                alert('Course added to cart!');
+            } else {
+                alert('This course is already in your cart!');
+            }
+        }
+
+        // Function to start the course
+        function startCourse() {
+            window.location.href = "vid.html?course=" + encodeURIComponent(currentCourse.title);
+        }
+
+        // Update button display when page loads
+        document.addEventListener("DOMContentLoaded", function() {
+            const enrollButton = document.getElementById("enroll-button");
+            
+            if (isCoursePurchased()) {
+                enrollButton.textContent = "Start the Course";
+                enrollButton.classList.remove("bg-green-500", "hover:bg-green-600");
+                enrollButton.classList.add("bg-blue-500", "hover:bg-blue-600");
+                enrollButton.onclick = startCourse;
+            } else {
+                enrollButton.textContent = "Enroll Now";
+                enrollButton.classList.remove("bg-blue-500", "hover:bg-blue-600");
+                enrollButton.classList.add("bg-green-500", "hover:bg-green-600");
+                enrollButton.onclick = addToCart;
+            }
+        });
+    </script>
+</head>
+<body class="bg-gray-100 font-sans">
+
+    <!-- Navbar (same as previous) -->
+    <nav class="bg-white shadow-md p-4 flex justify-between items-center">
+        <h1 class="text-2xl font-bold text-indigo-600">SkillTrek.</h1>
+        <ul class="hidden md:flex space-x-6 text-gray-600">
+            <li><a href="index.html" class="hover:text-indigo-600">Home</a></li>
+            <li><a href="category.html" class="hover:text-indigo-600">Category</a></li>
+            <li><a href="courses.html" class="hover:text-indigo-600">Courses</a></li>
+            <li><a href="blog.html" class="hover:text-indigo-600">Blog</a></li>
+        </ul>
+        
+        <div class="relative">
+            <button id="profile-btn" class="text-gray-600 focus:outline-none">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A9 9 0 1118.88 6.197M12 14v2m0 4h.01"></path>
+                </svg>
+            </button>
+            <div id="profile-dropdown" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 z-50">
+                <a href="my-learning.html" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">My Learning</a>
+                <a href="cart.html" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">My Cart</a>
+                <a href="settings.html" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Settings</a>
+                <a href="logout.html" class="block px-4 py-2 text-red-600 hover:bg-gray-100">Logout</a>
+            </div>
+        </div>
+        <button id="menu-toggle" class="md:hidden text-gray-600 focus:outline-none">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+            </svg>
+        </button>
+        <div id="mobile-menu" class="hidden absolute top-16 left-0 w-full bg-white shadow-md md:hidden">
+            <ul class="text-gray-600 text-center">
+                <li><a href="index.html" class="block py-2 hover:bg-gray-200">Home</a></li>
+                <li><a href="category.html" class="block py-2 hover:bg-gray-200">Category</a></li>
+                <li><a href="courses.html" class="block py-2 hover:bg-gray-200">Courses</a></li>
+                <li><a href="blog.html" class="block py-2 hover:bg-gray-200">Blog</a></li>
+                <li><a href="login.html" class="block py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600">Login</a></li>
+                <li><a href="signup.html" class="block py-2 bg-indigo-500 text-white rounded-lg hover:bg-indigo-600">Sign Up</a></li>
+            </ul>
+        </div>
+        <script>
+            document.getElementById("menu-toggle").addEventListener("click", function() {
+                var menu = document.getElementById("mobile-menu");
+                menu.classList.toggle("hidden");
+            });
+            const profileBtn = document.getElementById("profile-btn");
+            const dropdown = document.getElementById("profile-dropdown");
+
+            profileBtn.addEventListener("click", () => {
+                dropdown.classList.toggle("hidden");
+            });
+
+            document.addEventListener("click", (event) => {
+                if (!profileBtn.contains(event.target) && !dropdown.contains(event.target)) {
+                    dropdown.classList.add("hidden");
+                }
+            });
+        </script>
+    </nav>
+
+    <!-- Course Header Section -->
+    <section class="max-w-6xl mx-auto mt-8 p-6 bg-white shadow-lg rounded-lg">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <!-- Left Side: Course Details -->
+            <div class="md:col-span-2">
+                <h1 class="text-4xl font-bold text-gray-800">Linux System Administration</h1>
+                <p class="text-gray-600 mt-2">Master essential Linux administration skills including user management, file systems, networking, and security.</p>
+
+                <!-- Instructor & Rating -->
+                <div class="flex items-center mt-4 text-gray-500">
+                    <span>Instructor: <b class="text-indigo-600">Sarah Johnson</b></span>
+                    <span class="ml-6">⭐ 4.9 (1,500 Ratings)</span>
+                </div>
+
+                <!-- Course Preview -->
+                <div class="mt-6">
+                    <img src="linux1.jpg" alt="Course Preview" class="w-full rounded-lg">
+                </div>
+
+                <!-- Course Highlights -->
+                <h3 class="text-2xl font-semibold mt-6">What you'll learn</h3>
+                <ul class="list-disc pl-6 text-gray-600 mt-2">
+                    <li>Linux installation and package management</li>
+                    <li>User and group administration</li>
+                    <li>Filesystem hierarchy and permissions</li>
+                    <li>Networking and firewall configuration</li>
+                    <li>Shell scripting and automation</li>
+                    <li>System monitoring and troubleshooting</li>
+                </ul>
+            </div>
+
+            <!-- Right Side: Course Price & Enroll -->
+            <div class="bg-white p-6 rounded-lg shadow-lg sticky top-20">
+                <p class="text-3xl font-bold text-indigo-600">₹899</p>
+                <p class="text-gray-500 mt-1">Limited-time offer</p>
+                <button id="enroll-button" class="mt-4 w-full bg-green-500 text-white px-6 py-3 rounded-lg shadow-md hover:bg-green-600">
+                    Enroll Now
+                </button>
+
+                <hr class="my-4">
+
+                <!-- Course Features -->
+                <ul class="text-gray-600">
+                    <li>📅 Duration: 15 Hours</li>
+                    <li>📚 14 Modules + Hands-on Labs</li>
+                    <li>🎓 Certificate of Completion</li>
+                    <li>📱 Access on Mobile & Desktop</li>
+                    <li>🖥️ Real-world projects</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Course Contents -->
+    <section class="max-w-6xl mx-auto mt-12 p-6 bg-white shadow-lg rounded-lg">
+        <h2 class="text-3xl font-bold text-gray-800">Course Content</h2>
+        <p class="text-gray-600 mt-2">14 Sections • 60 Lectures • 15 Hours Total Length</p>
+
+        <div class="mt-6">
+            <details class="mb-4">
+                <summary class="cursor-pointer bg-gray-200 p-4 rounded-md text-lg font-semibold">1. Linux Fundamentals</summary>
+                <p class="p-4 text-gray-600">Introduction to Linux, distributions, and basic commands.</p>
+            </details>
+
+            <details class="mb-4">
+                <summary class="cursor-pointer bg-gray-200 p-4 rounded-md text-lg font-semibold">2. User and Group Management</summary>
+                <p class="p-4 text-gray-600">Creating users, groups, and managing permissions.</p>
+            </details>
+
+            <details class="mb-4">
+                <summary class="cursor-pointer bg-gray-200 p-4 rounded-md text-lg font-semibold">3. Filesystem Administration</summary>
+                <p class="p-4 text-gray-600">Partitioning, mounting, and managing filesystems.</p>
+            </details>
+
+            <details class="mb-4">
+                <summary class="cursor-pointer bg-gray-200 p-4 rounded-md text-lg font-semibold">4. Networking Configuration</summary>
+                <p class="p-4 text-gray-600">Network interfaces, firewall, and SSH configuration.</p>
+            </details>
+
+            <details class="mb-4">
+                <summary class="cursor-pointer bg-gray-200 p-4 rounded-md text-lg font-semibold">5. Shell Scripting</summary>
+                <p class="p-4 text-gray-600">Automating tasks with Bash scripting.</p>
+            </details>
+        </div>
+    </section>
+
+    <!-- FAQs -->
+    <section class="max-w-6xl mx-auto mt-12 p-6 bg-white shadow-lg rounded-lg">
+        <h2 class="text-3xl font-bold text-gray-800">Frequently Asked Questions</h2>
+
+        <div class="mt-6">
+            <details class="mb-4">
+                <summary class="cursor-pointer bg-gray-200 p-4 rounded-md text-lg font-semibold">Do I need prior Linux experience?</summary>
+                <p class="p-4 text-gray-600">Basic computer skills are recommended, but no prior Linux experience is required.</p>
+            </details>
+
+            <details class="mb-4">
+                <summary class="cursor-pointer bg-gray-200 p-4 rounded-md text-lg font-semibold">Will this help with Linux certifications?</summary>
+                <p class="p-4 text-gray-600">Yes, this course covers many topics found in LPIC-1 and RHCSA certifications.</p>
+            </details>
+
+            <details class="mb-4">
+                <summary class="cursor-pointer bg-gray-200 p-4 rounded-md text-lg font-semibold">What Linux distribution is used?</summary>
+                <p class="p-4 text-gray-600">The course primarily uses Ubuntu but concepts apply to all major distributions.</p>
+            </details>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white text-center p-6 mt-16">
+        <p>&copy; 2025 SkillTrek. All rights reserved.</p>
+    </footer>
+
+</body>
+</html>
